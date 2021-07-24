@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TAuthDataLocal, TPost } from '../types';
+import { TAuthDataLocal, TPost, TPostsSearch } from '../types';
 
 const API = axios.create({
     baseURL: 'http://localhost:5000',
@@ -13,7 +13,9 @@ API.interceptors.request.use((req) => {
     return req;
 })
 
-export const fetchPosts = () => API.get('/posts');
+export const fetchPosts = (page: string) => API.get(`/posts?page=${page}`);
+export const fetchPost = (id: string) => API.get(`/posts/${id}`);
+export const fetchPostsBySearch = (searchQuery: TPostsSearch) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags || 'none'}`);
 export const createPost = (newPost: TPost) => API.post('/posts', newPost);
 export const updatePost = (id: string, updatedPost: TPost) => API.patch(`/posts/${id}`, updatedPost);
 export const deletePost = (id: string) => API.delete(`/posts/${id}`);

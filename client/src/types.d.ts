@@ -25,3 +25,8 @@ export type TAuthDataDb = {
     password: string,
     confrimPassword: string
 }
+
+export type TPostsSearch = {
+    search?: string;
+    tags?: string;
+}

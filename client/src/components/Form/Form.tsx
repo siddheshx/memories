@@ -9,6 +9,7 @@ import { useAppSelector } from '../../app/hooks';
 import { useEffect } from 'react';
 import { SetStateAction } from 'react';
 import { TPost } from '../../types';
+import { useHistory } from 'react-router-dom';
 
 interface IFormProps {
     currentId?: string | null;
@@ -29,13 +30,15 @@ const Form = ({ currentId, setCurrentId }: IFormProps) => {
     const post = useAppSelector<any>((state) => currentId ? state.posts.posts.find((p) => p._id === currentId) : null);
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem('profile') || '{}');
+    const routerHistory = useHistory();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (currentId) {
             dispatch(updatePostAsync({ id: currentId, post: { ...postData, name: user?.result?.name} }));
         } else {
-            dispatch(createPostAsync({ ...postData, name: user?.result?.name}));
+            let createPostData = { ...postData, name: user?.result?.name};
+            dispatch(createPostAsync({ createPostData, routerHistory }));
         }
         clearFormData();
     }
@@ -60,7 +63,7 @@ const Form = ({ currentId, setCurrentId }: IFormProps) => {
     }
 
     return (
-        <Paper className={classes.paper}>
+        <Paper className={classes.paper} elevation={6}>
             <form autoComplete="off" noValidate
                 className={`${classes.root} ${classes.form}`}
                 onSubmit={handleSubmit}
