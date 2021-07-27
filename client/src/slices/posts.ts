@@ -113,6 +113,25 @@ export const likePostAsync = createAsyncThunk(
     }
 );
 
+type commentPostProps = {
+    comment: string;
+    _id: string | undefined
+}
+
+export const commentPostAsync = createAsyncThunk(
+    'posts/commentPost',
+    async ({ comment, _id }: commentPostProps) => {
+        try {
+            if (_id) {
+                const { data } = await api.commentPost({ comment: comment, id: _id });
+                return data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+);
+
 export const postsSlice = createSlice({
     name: 'posts',
     initialState,
@@ -159,6 +178,12 @@ export const postsSlice = createSlice({
                 const index = state.posts.findIndex((post) => post._id === action.payload._id)
                 if (index !== -1)
                     state.posts[index].likes = action.payload.likes
+            })
+
+            .addCase(commentPostAsync.fulfilled, (state, action) => {
+                const index = state.posts.findIndex((post) => post._id === action.payload._id)
+                if (index !== -1)
+                    state.posts[index].comments = action.payload.comments
             })
             .addCase(getPostsBySearchAsync.pending, (state) => {
                 state.isLoading = true;

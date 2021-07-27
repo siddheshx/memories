@@ -4,7 +4,6 @@ import PostMessage from '../models/postMessage.js'
 export const getPosts = async (req, res) => {
     const { page } = req.query;
     try {
-        console.log(page);
         const LIMIT = 8;
         const startIndex = ((Number(page) - 1) * LIMIT); // Get the starting index of every page
         const total = await PostMessage.countDocuments({});
@@ -107,6 +106,27 @@ export const likePost = async (req, res) => {
     } else {
         post.likes = post.likes.filter((id) => id !== String(req.userId));
     }
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+
+    res.json(updatedPost);
+}
+
+export const commentPost = async (req, res) => {
+    const  id = req.params.id;
+    const { comment } = req.body;
+
+    if (!req.userId) {
+        return res.json({ message: 'Unauthenticated.' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).send('No post with that id');
+    }
+
+    const post = await PostMessage.findById(id);
+
+    post.comments.push(comment);
 
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
 

@@ -7,6 +7,7 @@ export type TPost = {
     tags?: string[];
     selectedFile?: string,
     likes?: string[],
+    comments?: string[],
     createdAt?: string
 }
 

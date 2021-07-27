@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { clearPost, getPostAsync, getPostsBySearchAsync } from '../../slices/posts';
 import useStyles from './styles';
 import { TPost } from '../../types';
+import CommentSection from './CommentSection';
 
 type ParamTypes = {
   id: string
@@ -60,7 +61,7 @@ const Post = () => {
           <Divider style={{ margin: '20px 0' }} />
           <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
           <Divider style={{ margin: '20px 0' }} />
-          <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
+          <CommentSection post={post} />
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={classes.imageSection}>

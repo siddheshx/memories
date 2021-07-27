@@ -20,6 +20,6 @@ export const createPost = (newPost: TPost) => API.post('/posts', newPost);
 export const updatePost = (id: string, updatedPost: TPost) => API.patch(`/posts/${id}`, updatedPost);
 export const deletePost = (id: string) => API.delete(`/posts/${id}`);
 export const likePost = (id: string) => API.patch(`/posts/${id}/likePost`);
-
-export const signIn = (formData: TAuthDataLocal) => API.post('/user/signin', formData);
+export const commentPost = ({ comment, id }: any ) => API.post(`/posts/${id}/commentPost`, { comment: comment } );
+export const signIn = (formData: TAuthDataLocal) => API.post('/auth', formData);
 export const signUp = (formData: TAuthDataLocal) => API.post('/user/signup', formData);
