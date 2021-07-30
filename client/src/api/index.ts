@@ -7,7 +7,7 @@ const API = axios.create({
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile') || '{}')?.token}`;
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile') || '{}')?.access_token}`;
     }
 
     return req;
@@ -21,5 +21,5 @@ export const updatePost = (id: string, updatedPost: TPost) => API.patch(`/posts/
 export const deletePost = (id: string) => API.delete(`/posts/${id}`);
 export const likePost = (id: string) => API.patch(`/posts/${id}/likePost`);
 export const commentPost = ({ comment, id }: any ) => API.post(`/posts/${id}/commentPost`, { comment: comment } );
-export const signIn = (formData: TAuthDataLocal) => API.post('/auth', formData);
-export const signUp = (formData: TAuthDataLocal) => API.post('/user/signup', formData);
+export const signIn = (formData: TAuthDataLocal) => API.post('/auth/signin', formData);
+export const signUp = (formData: TAuthDataLocal) => API.post('/auth/signup', formData);

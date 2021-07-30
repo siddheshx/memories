@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateDto } from './dto/create.dto';
+import { CreateUserDto } from './dto/create.dto';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 
@@ -12,7 +12,7 @@ export class UsersService {
         private readonly userModel: Model<User>
     ) { }
 
-    async create(createDto: CreateDto): Promise<User> {
+    async create(createDto: CreateUserDto): Promise<{_id: string, name: string, email: string}> {
 
         const exisitingUser = await this.userModel.findOne({ email: createDto.email });
 
@@ -31,11 +31,11 @@ export class UsersService {
             const createdUser = new this.userModel({
                 email: createDto.email,
                 password: hashedPassword,
-                name: createDto.name
+                name: `${createDto.firstName} ${createDto.lastName}`
             });
             const user = await createdUser.save();
             delete user.password;
-            return user;
+            return {_id: user._id, name: user.name, email: user.email};
         } catch (error) {
             throw new HttpException('Error creating User', HttpStatus.BAD_REQUEST);
         }

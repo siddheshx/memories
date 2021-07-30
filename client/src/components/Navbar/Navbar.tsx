@@ -18,7 +18,7 @@ const Navbar = () => {
     const location = useLocation();
 
     useEffect(() => {
-        const token = user?.token;
+        const token = user?.access_token;
         if (token) {
             const decodedToken: any = decode(token);
             if (decodedToken.exp * 1000 < new Date().getTime()) {

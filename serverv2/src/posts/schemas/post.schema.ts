@@ -28,6 +28,9 @@ export class Post {
 
   @Prop([String])
   comments: string[];
+
+  @Prop({ default: new Date().toISOString() })
+  createdAt: Date;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

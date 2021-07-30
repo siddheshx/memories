@@ -14,8 +14,6 @@ const App = () => {
         user = JSON.parse(localStorage.getItem('profile') || '{}');
     }
 
-    console.log(user);
-
     return (
         <BrowserRouter>
             <Container maxWidth="xl">

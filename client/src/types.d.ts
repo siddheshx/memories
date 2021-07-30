@@ -16,7 +16,7 @@ export type TAuthDataLocal = {
     lastName: string,
     email: string,
     password: string,
-    confrimPassword: string
+    confirmPassword: string
 }
 
 export type TAuthDataDb = {
@@ -24,7 +24,7 @@ export type TAuthDataDb = {
     lastName: string,
     email: string,
     password: string,
-    confrimPassword: string
+    confirmPassword: string
 }
 
 export type TPostsSearch = {

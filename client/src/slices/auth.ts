@@ -9,7 +9,9 @@ type signinProps =  {
 }
 
 const initialState = {
-    authData: {}
+    authData: {},
+    error: false,
+    errorMessge: ""
 }
 
 export const signinAsync = createAsyncThunk(
@@ -17,11 +19,10 @@ export const signinAsync = createAsyncThunk(
     async ({formData, routerHistory}: signinProps, ThunkAPI) => {
         try {
             const { data } = await api.signIn(formData);
-
             ThunkAPI.dispatch(login(data));
             routerHistory.push('/');
         } catch (error) {
-            console.log(error);
+            ThunkAPI.dispatch(authError(error.response.data.message));
         }
     }
 );
@@ -34,8 +35,9 @@ export const signupAsync = createAsyncThunk(
 
             ThunkAPI.dispatch(login(data));
             routerHistory.push('/');
-        } catch (error) {
-            console.log(error);
+        } catch (error: any) {
+            ThunkAPI.dispatch(authError(error.response.data.message));
+            
         }
     }
 );
@@ -51,10 +53,18 @@ export const authSlice = createSlice({
         logout: (state) => {
             localStorage.clear();
             state.authData = {}
+        },
+        authError: (state, action) => {
+            state.error = true;
+            state.errorMessge = action.payload;
+        },
+        clearAuthError: (state) => {
+            state.error = false;
+            state.errorMessge = "";
         }
     }
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, authError, clearAuthError } = authSlice.actions;
 
 export default authSlice.reducer;
