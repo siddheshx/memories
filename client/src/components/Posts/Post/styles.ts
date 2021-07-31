@@ -53,4 +53,8 @@ export default makeStyles({
     display: 'block',
     textAlign: 'initial',
   },
+  cardContentH: {
+    height: 18,
+    overflow: "hidden"
+  }
 });
